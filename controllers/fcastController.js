@@ -7,22 +7,22 @@ var axios = require("axios").default;
  */
 module.exports = {
 
-    getNow: function(req, res) {
-        if(!req.body.city || !req.body.units)
+    getNow: function (req, res) {
+        if (!req.params.city || !req.params.units)
             return res.status(406).json({
                 message: 'Parameters not given.'
             });
 
-        if(req.body.units!= "imperial")
-            if (req.body.units != "metric")
+        if (req.params.units != "imperial")
+            if (req.params.units != "metric")
                 return res.status(406).json({
                     message: 'Invalid unit parameter'
                 });
 
-        var url = 'https://api.openweathermap.org/data/2.5/weather?q='+ req.body.city +
-        '&appid='+ process.env.WAPI +'&units=' + req.body.units;
-            
-            
+        var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + req.params.city +
+            '&appid=' + process.env.WAPI + '&units=' + req.params.units;
+
+
         axios.get(url).then(function (response) {
             return res.status(201).json(response.data);
         }).catch(function (error) {
@@ -33,16 +33,16 @@ module.exports = {
             });
         });
 
-    }, 
+    },
 
-    getGeoLocation: function(req, res, next) {
-        if(!req.body.city)
+    getGeoLocation: function (req, res, next) {
+        if (!req.params.city)
             return res.status(406).json({
                 message: 'City not given.'
             });
 
 
-        var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + req.body.city +'&appid='+ process.env.WAPI;
+        var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + req.params.city + '&appid=' + process.env.WAPI;
 
 
         axios.get(geoUrl).then(function (response) {
@@ -57,23 +57,23 @@ module.exports = {
             });
         });
 
-    }, 
+    },
 
-    getDaily: function(req, res) {
-        if(!req.body.units)
+    getDaily: function (req, res) {
+        if (!req.params.units)
             return res.status(406).json({
                 message: 'Units not given.'
             });
 
-        if(req.body.units!= "imperial")
-            if (req.body.units != "metric")
+        if (req.params.units != "imperial")
+            if (req.params.units != "metric")
                 return res.status(406).json({
                     message: 'Invalid unit parameter'
                 });
 
         var lat = res.lat;
         var lon = res.lon;
-        var weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat +'&lon=' + lon +'&appid=' + process.env.WAPI;
+        var weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + process.env.WAPI;
 
         axios.get(weatherUrl).then(function (response) {
             return res.status(201).json(response.data);
@@ -85,7 +85,7 @@ module.exports = {
             });
         });
 
-        
+
     }
 
 };
