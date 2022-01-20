@@ -73,7 +73,8 @@ module.exports = {
 
         var lat = res.lat;
         var lon = res.lon;
-        var weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + process.env.WAPI;
+        var weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + 
+        '&appid=' + process.env.WAPI + '&units=' + req.params.units;
 
         axios.get(weatherUrl).then(function (response) {
             return res.status(201).json(response.data);
